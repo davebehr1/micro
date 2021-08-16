@@ -11,6 +11,8 @@ github.com/cncf/udpa/go v0.0.0-20201120205902-5459f2c99403/go.mod h1:WmhPx2Nbnht
 github.com/cncf/xds/go v0.0.0-20210312221358-fbca930ec8ed/go.mod h1:eXthEFrGJvWHgFFCl3hGmgk+/aYT6PnTQLykKQRLhEs=
 github.com/davebehr1/micro/consignment-service v0.0.0-20210813155205-e691f167e8f9 h1:BbR6Qf4/8fZJ1YeSKk6sbYRNBDI4ZjnunktXYGRZAes=
 github.com/davebehr1/micro/consignment-service v0.0.0-20210813155205-e691f167e8f9/go.mod h1:8mk+k8k1IzZecpHeOMAjYVWjKA0X5T0XNGtdZhbuIMo=
+github.com/davebehr1/micro/consignment-service v0.0.0-20210816145712-73b8ed63d5b5 h1:5ucO24z443vq1X49F0ycm5Rlvt6FhlO0hlP7T/Gq88g=
+github.com/davebehr1/micro/consignment-service v0.0.0-20210816145712-73b8ed63d5b5/go.mod h1:Il/21nb2Fo8HP8zN6bXbSp3yUR7F3nF+a24iyIgndOU=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/envoyproxy/go-control-plane v0.9.0/go.mod h1:YTl/9mNaCwkRvm6d1a2C3ymFceY/DCBVvsKhRF0iEA4=
 github.com/envoyproxy/go-control-plane v0.9.1-0.20191026205805-5f8ba28d4473/go.mod h1:YTl/9mNaCwkRvm6d1a2C3ymFceY/DCBVvsKhRF0iEA4=
