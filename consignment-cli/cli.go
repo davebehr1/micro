@@ -7,9 +7,10 @@ import (
 	"log"
 	"os"
 
+	microclient "github.com/asim/go-micro/v3/client"
+	"github.com/asim/go-micro/v3/cmd"
 	pb "github.com/davebehr1/micro/consignment-service/proto/consignment"
 	"golang.org/x/net/context"
-	"google.golang.org/grpc"
 )
 
 const (
@@ -28,14 +29,11 @@ func parseFile(file string) (*pb.Consignment, error) {
 }
 
 func main() {
+
+	cmd.Init()
+
+	client := pb.NewShippingService("go.micro.srv.consignment", microclient.DefaultClient)
 	// Set up a connection to the server.
-	conn, err := grpc.Dial(address, grpc.WithInsecure())
-	if err != nil {
-		log.Fatalf("Did not connect: %v", err)
-	}
-	defer conn.Close()
-	client := pb.NewShippingServiceClient(conn)
-	// Contact the server and print out its response.
 	file := defaultFilename
 	if len(os.Args) > 1 {
 		file = os.Args[1]
@@ -47,9 +45,9 @@ func main() {
 		log.Fatalf("Could not parse file: %v", err)
 	}
 
-	r, err := client.CreateConsignment(context.Background(), consignment)
+	r, err := client.CreateConsignment(context.TODO(), consignment)
 	if err != nil {
-		log.Fatalf("Could not greet: %v", err)
+		log.Fatalf("Could not create: %v", err)
 	}
 	log.Printf("Created: %t", r.Created)
 
