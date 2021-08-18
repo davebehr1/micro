@@ -2,7 +2,7 @@ syntax = "proto3";
 
 option go_package = "github.com/davebehr1/micro/consignment-service/proto/consignment/consignment";
 
-package consignment;
+package go.micro.srv.consignment;
 
 
 service ShippingService {

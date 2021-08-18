@@ -8,6 +8,7 @@ import (
 
 	"github.com/asim/go-micro/v3"
 	pb "github.com/davebehr1/micro/consignment-service/proto/consignment"
+	vesselProto "github.com/davebehr1/shippy/vessel-service/proto/vessel"
 	"golang.org/x/net/context"
 )
 
@@ -41,8 +42,8 @@ func (repo *Repository) GetAll() []*pb.Consignment {
 // in the generated code itself for the exact method signatures etc
 // to give you a better idea.
 type service struct {
-	pb.UnimplementedShippingServiceServer
-	repo IRepository
+	repo         IRepository
+	vesselClient vesselProto.VesselServiceClient
 }
 
 // CreateConsignment - we created just one method on our service,

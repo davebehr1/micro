@@ -1,6 +1,10 @@
 syntax = "proto3";
 
-package g.micro.srv.vessel;
+
+option go_package = "github.com/davebehr1/micro/vessel-service/proto/vessel/vessel";
+
+
+package go.micro.srv.vessel;
 
 service VesselService {
     rpc FindAvailable(Specification) returns (Response) {}

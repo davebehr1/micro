@@ -1,6 +1,6 @@
 FROM golang:1.16.0 as builder
 
-WORKDIR /go/src/github.com/davebehr1/micro/consignment-service
+WORKDIR /go/src/github.com/davebehr1/micro/vessel-service
 
 COPY go.mod ./
 COPY go.sum ./
@@ -18,7 +18,6 @@ RUN apk --no-cache add ca-certificates
 
 RUN mkdir /app
 WORKDIR /app
+COPY --from=builder /go/src/github.com/davebehr1/micro/vessel-service/vessel-service .
 
-COPY --from=builder /go/src/github.com/davebehr1/micro/consignment-service/consignment-service .
-
-CMD ["./consignment-service"]
+CMD ["./vessel-service"]

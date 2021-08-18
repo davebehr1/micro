@@ -32,7 +32,7 @@ func NewShippingServiceClient(cc grpc.ClientConnInterface) ShippingServiceClient
 
 func (c *shippingServiceClient) CreateConsignment(ctx context.Context, in *Consignment, opts ...grpc.CallOption) (*Response, error) {
 	out := new(Response)
-	err := c.cc.Invoke(ctx, "/consignment.ShippingService/CreateConsignment", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/go.micro.srv.consignment.ShippingService/CreateConsignment", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -41,7 +41,7 @@ func (c *shippingServiceClient) CreateConsignment(ctx context.Context, in *Consi
 
 func (c *shippingServiceClient) GetConsignments(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*Response, error) {
 	out := new(Response)
-	err := c.cc.Invoke(ctx, "/consignment.ShippingService/GetConsignments", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/go.micro.srv.consignment.ShippingService/GetConsignments", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -90,7 +90,7 @@ func _ShippingService_CreateConsignment_Handler(srv interface{}, ctx context.Con
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/consignment.ShippingService/CreateConsignment",
+		FullMethod: "/go.micro.srv.consignment.ShippingService/CreateConsignment",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ShippingServiceServer).CreateConsignment(ctx, req.(*Consignment))
@@ -108,7 +108,7 @@ func _ShippingService_GetConsignments_Handler(srv interface{}, ctx context.Conte
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/consignment.ShippingService/GetConsignments",
+		FullMethod: "/go.micro.srv.consignment.ShippingService/GetConsignments",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ShippingServiceServer).GetConsignments(ctx, req.(*GetRequest))
@@ -120,7 +120,7 @@ func _ShippingService_GetConsignments_Handler(srv interface{}, ctx context.Conte
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ShippingService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "consignment.ShippingService",
+	ServiceName: "go.micro.srv.consignment.ShippingService",
 	HandlerType: (*ShippingServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
