@@ -1,12 +1,13 @@
 syntax = "proto3";
 
 
-option go_package = "github.com/davebehr1/micro/vessel-service/proto/vessel/vessel";
+option go_package = "/proto/vessel";
 
 
 package go.micro.srv.vessel;
 
 service VesselService {
+    rpc Create(Vessel) returns (Response) {}
     rpc FindAvailable(Specification) returns (Response) {}
 }
 
@@ -27,4 +28,5 @@ message Vessel {
   message Response {
     Vessel vessel = 1;
     repeated Vessel vessels = 2;
+    bool created = 3;
   }
