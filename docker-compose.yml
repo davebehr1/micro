@@ -1,19 +1,19 @@
 version: '3.1'
 
 services:
-  user-cli:  
-    build: ./user-cli
-    depends_on: 
-      - user-service
-    environment:
-      MICRO_REGISTRY: "mdns"
+  # user-cli:  
+  #   build: ./user-cli
+  #   depends_on: 
+  #     - user-service
+  #   environment:
+  #     MICRO_REGISTRY: "mdns"
   
-  consignment-cli:
-    build: ./consignment-cli
-    depends_on: 
-      - consignment-service
-    environment:
-      MICRO_REGISTRY: "mdns"
+  # consignment-cli:
+  #   build: ./consignment-cli
+  #   depends_on: 
+  #     - consignment-service
+  #   environment:
+  #     MICRO_REGISTRY: "mdns"
 
   consignment-service:
     build: ./consignment-service
@@ -34,8 +34,8 @@ services:
 
   user-service:
     build: ./user-service
-    # depends_on: 
-    #   - database
+    depends_on: 
+      - database
     ports:
       - 50053:50051
     environment:

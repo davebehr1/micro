@@ -4,13 +4,19 @@ package main
 import (
 
 	// Import the generated protobuf code
+	"errors"
 	"fmt"
 	"log"
 	"os"
 
 	"github.com/asim/go-micro/v3"
+	"github.com/asim/go-micro/v3/client"
+	"github.com/asim/go-micro/v3/metadata"
+	"github.com/asim/go-micro/v3/server"
 	pb "github.com/davebehr1/micro/consignment-service/proto/consignment"
+	userService "github.com/davebehr1/micro/user-service/proto/user"
 	vesselProto "github.com/davebehr1/micro/vessel-service/proto/vessel"
+	"golang.org/x/net/context"
 )
 
 const (
@@ -84,6 +90,30 @@ const (
 // 	return nil
 // }
 
+func AuthWrapper(fn server.HandlerFunc) server.HandlerFunc {
+	return func(ctx context.Context, req server.Request, resp interface{}) error {
+		meta, ok := metadata.FromContext(ctx)
+		if !ok {
+			return errors.New("no auth meta-data found in request")
+		}
+
+		// Note this is now uppercase (not entirely sure why this is...)
+		token := meta["Token"]
+		log.Println("Authenticating with token: ", token)
+
+		// Auth here
+		authClient := userService.NewUserService("go.micro.srv.user", client.DefaultClient)
+		_, err := authClient.ValidateToken(context.Background(), &userService.Token{
+			Token: token,
+		})
+		if err != nil {
+			return err
+		}
+		err = fn(ctx, req, resp)
+		return err
+	}
+}
+
 func main() {
 
 	host := os.Getenv("DB_HOST")
@@ -110,6 +140,7 @@ func main() {
 		// This name must match the package name given in your protobuf definition
 		micro.Name("go.micro.srv.consignment"),
 		micro.Version("latest"),
+		micro.WrapHandler(AuthWrapper),
 	)
 
 	vesselClient := vesselProto.NewVesselService("go.micro.srv.vessel", srv.Client())
