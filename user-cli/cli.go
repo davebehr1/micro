@@ -1,74 +1,63 @@
 package main
 
 import (
-	"context"
 	"log"
 	"os"
 
+	micro "github.com/asim/go-micro/v3"
 	microclient "github.com/asim/go-micro/v3/client"
-	"github.com/asim/go-micro/v3/cmd"
 	pb "github.com/davebehr1/micro/user-service/proto/user"
-	"github.com/urfave/cli/v2"
+	"golang.org/x/net/context"
 )
 
-func car(*cli.Context) error {
-	return nil
-}
 func main() {
 
-	cmd.Init()
+	srv := micro.NewService(
+
+		micro.Name("go.micro.srv.user-cli"),
+		micro.Version("latest"),
+	)
+
+	// Init will parse the command line flags.
+	srv.Init()
 
 	client := pb.NewUserService("go.micro.srv.user", microclient.DefaultClient)
-	app := &cli.App{
-		Flags: []cli.Flag{
-			&cli.StringFlag{
-				Name:  "name",
-				Usage: "You full name",
-			},
-			&cli.StringFlag{
-				Name:  "email",
-				Usage: "Your email",
-			},
-			&cli.StringFlag{
-				Name:  "password",
-				Usage: "Your password",
-			},
-			&cli.StringFlag{
-				Name:  "company",
-				Usage: "Your company",
-			},
-		},
-		Action: func(c *cli.Context) error {
-			name := c.String("name")
-			email := c.String("email")
-			password := c.String("password")
-			company := c.String("company")
 
-			r, err := client.Create(context.TODO(), &pb.User{
-				Name:     name,
-				Email:    email,
-				Password: password,
-				Company:  company,
-			})
-			if err != nil {
-				log.Fatalf("Could not create: %v", err)
-			}
-			log.Printf("Created: %t", r.User.Id)
+	name := "Ewan Valentine"
+	email := "ewan.valentine89@gmail.com"
+	password := "test123"
+	company := "BBC"
 
-			getAll, err := client.GetAll(context.Background(), &pb.Request{})
-			if err != nil {
-				log.Fatalf("Could not list users: %v", err)
-			}
-			for _, v := range getAll.Users {
-				log.Println(v)
-			}
+	r, err := client.Create(context.TODO(), &pb.User{
+		Name:     name,
+		Email:    email,
+		Password: password,
+		Company:  company,
+	})
+	if err != nil {
+		log.Fatalf("Could not create: %v", err)
+	}
+	log.Printf("Created: %s", r.User.Id)
 
-			return nil
-		},
+	getAll, err := client.GetAll(context.Background(), &pb.Request{})
+	if err != nil {
+		log.Fatalf("Could not list users: %v", err)
+	}
+	for _, v := range getAll.Users {
+		log.Println(v)
 	}
 
-	// Run the server
-	if err := app.Run(os.Args); err != nil {
-		log.Println(err)
+	authResponse, err := client.Auth(context.TODO(), &pb.User{
+		Email:    email,
+		Password: password,
+	})
+
+	if err != nil {
+		log.Fatalf("Could not authenticate user: %s error: %v\n", email, err)
 	}
+
+	log.Printf("Your access token is: %s \n", authResponse.Token)
+
+	// let's just exit because
+	os.Exit(0)
 }
