@@ -1,22 +1,24 @@
 version: '3.1'
 
 services:
-  # user-cli:  
-  #   build: ./user-cli
-  #   depends_on: 
-  #     - user-service
-  #   environment:
-  #     MICRO_REGISTRY: "mdns"
+  user-cli:  
+    build: ./user-cli
+    depends_on: 
+      - user-service
+    environment:
+      MICRO_REGISTRY: "mdns"
   
-  # consignment-cli:
-  #   build: ./consignment-cli
-  #   depends_on: 
-  #     - consignment-service
-  #   environment:
-  #     MICRO_REGISTRY: "mdns"
+  consignment-cli:
+    build: ./consignment-cli
+    depends_on: 
+      - consignment-service
+    environment:
+      MICRO_REGISTRY: "mdns"
 
   consignment-service:
     build: ./consignment-service
+    depends_on: 
+      - datastore
     ports:
       - 50051:50051
     environment:
@@ -26,6 +28,8 @@ services:
 
   vessel-service:
     build: ./vessel-service
+    depends_on: 
+      - datastore
     ports:
       - 50052:50051
     environment:
@@ -46,6 +50,33 @@ services:
       DB_PORT: "5432"
       DB_USER: "postgres"
       DB_PASSWORD: "postgres"
+
+  nats:
+    image: nats
+    expose:
+      - "4222"
+    ports: 
+      - "8222:8222"
+
+  email-service:
+    build:
+      ./email-service
+    depends_on: 
+        - nats
+    ports:
+      - 50054:50051
+      
+
+  graphql:
+    build:
+      ./graphql-service
+    ports:
+      - 8000:8080
+    depends_on:
+      - user-service
+      - vessel-service
+      - consignment-service
+    restart: on-failure
   
   datastore:
     image: mongo
